@@ -13,7 +13,7 @@ const StatsCard = ({ title, value, subtitle, icon: Icon, colorClass, delay }) =>
     <div className="flex justify-between items-start z-10 relative">
       <div>
         <p className="text-slate-400 font-medium mb-1">{title}</p>
-        <h3 className="text-3xl font-bold text-white mb-1">{value}</h3>
+        <h3 className="text-3xl font-bold text-slate-100 mb-1">{value}</h3>
         <p className={`text-sm text-${colorClass}`}>{subtitle}</p>
       </div>
       <div className={`w-12 h-12 rounded-xl bg-surface flex items-center justify-center border border-${colorClass}/20 shadow-lg shadow-${colorClass}/10`}>
@@ -97,7 +97,7 @@ const Dashboard = () => {
           transition={{ delay: 0.4 }}
           className="glass-panel rounded-2xl p-6"
         >
-          <h2 className="text-xl font-semibold mb-4 border-b border-white/10 pb-4">Recent Activity</h2>
+          <h2 className="text-xl font-semibold mb-4 border-b border-slate-800 pb-4">Recent Activity</h2>
           <div className="space-y-4">
             {[
               { patient: "John D.", result: "DR Grade 2", time: "2h ago", alert: true },
@@ -105,19 +105,19 @@ const Dashboard = () => {
               { patient: "Robert K.", result: "Glaucoma", time: "1d ago", alert: true },
               { patient: "Emily W.", result: "DR Grade 1", time: "1d ago", alert: false },
             ].map((activity, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+              <div key={i} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-900 transition-colors cursor-pointer">
                 <div className="flex items-center gap-3">
                   <div className={`w-2 h-2 rounded-full ${activity.alert ? 'bg-amber-500' : 'bg-primary'}`}></div>
                   <div>
-                    <p className="font-medium text-sm text-slate-200">{activity.patient}</p>
-                    <p className={`text-xs ${activity.alert ? 'text-amber-400' : 'text-slate-400'}`}>{activity.result}</p>
+                    <p className="font-medium text-sm text-slate-100">{activity.patient}</p>
+                    <p className={`text-xs ${activity.alert ? 'text-amber-600' : 'text-slate-400'}`}>{activity.result}</p>
                   </div>
                 </div>
-                <span className="text-xs text-slate-500">{activity.time}</span>
+                <span className="text-xs text-slate-400">{activity.time}</span>
               </div>
             ))}
           </div>
-          <button className="w-full mt-4 py-2 text-sm text-slate-400 hover:text-primary transition-colors border border-white/5 rounded-lg hover:bg-white/5">
+          <button className="w-full mt-4 py-2 text-sm text-slate-400 hover:text-primary transition-colors border border-slate-800 rounded-lg hover:bg-slate-900">
             View All History
           </button>
         </motion.div>
@@ -134,11 +134,11 @@ const ScanLine = () => (
       <circle cx="50" cy="50" r="30" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2" />
       <motion.line 
         x1="20" y1="50" x2="80" y2="50" 
-        stroke="#3b82f6" strokeWidth="2"
+        stroke="#14b8a6" strokeWidth="2"
         initial={{ y1: 20, y2: 20, opacity: 0 }}
         animate={{ y1: 80, y2: 80, opacity: [0, 1, 1, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-        style={{ filter: "drop-shadow(0 0 4px #3b82f6)" }}
+        style={{ filter: "drop-shadow(0 0 4px #14b8a6)" }}
       />
     </svg>
 )

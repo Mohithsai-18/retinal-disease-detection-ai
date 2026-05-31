@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, User, Calendar, Clock, ChevronRight, X, Plus, Loader2, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000') + '/api';
+const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
 
 const getRiskFromStatus = (status) => {
   if (!status) return 'Low';
@@ -64,9 +64,9 @@ const AddPatientModal = ({ onClose, onSaved }) => {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative glass-panel rounded-2xl p-8 w-full max-w-lg z-10 border border-white/10"
+        className="relative glass-panel rounded-2xl p-8 w-full max-w-lg z-10 border border-slate-800"
       >
-        <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-xl hover:bg-white/10 transition-colors">
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-xl hover:bg-slate-900 transition-colors">
           <X className="w-5 h-5 text-slate-400" />
         </button>
 
@@ -85,7 +85,7 @@ const AddPatientModal = ({ onClose, onSaved }) => {
               <input
                 type="text" name="first_name" value={form.first_name} onChange={handleChange}
                 placeholder="e.g. Arjun"
-                className="w-full bg-surface border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-white placeholder:text-slate-600"
+                className="w-full bg-surface border border-slate-800 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-slate-100 placeholder:text-slate-500"
               />
             </div>
             <div>
@@ -93,7 +93,7 @@ const AddPatientModal = ({ onClose, onSaved }) => {
               <input
                 type="text" name="last_name" value={form.last_name} onChange={handleChange}
                 placeholder="e.g. Sharma"
-                className="w-full bg-surface border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-white placeholder:text-slate-600"
+                className="w-full bg-surface border border-slate-800 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-slate-100 placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -103,14 +103,14 @@ const AddPatientModal = ({ onClose, onSaved }) => {
               <label className="block text-sm text-slate-400 mb-1.5">Date of Birth *</label>
               <input
                 type="date" name="dob" value={form.dob} onChange={handleChange}
-                className="w-full bg-surface border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-white"
+                className="w-full bg-surface border border-slate-800 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-slate-100"
               />
             </div>
             <div>
               <label className="block text-sm text-slate-400 mb-1.5">Gender</label>
               <select
                 name="gender" value={form.gender} onChange={handleChange}
-                className="w-full bg-surface border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-white"
+                className="w-full bg-surface border border-slate-800 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-slate-100"
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -125,7 +125,7 @@ const AddPatientModal = ({ onClose, onSaved }) => {
               name="history" value={form.history} onChange={handleChange}
               placeholder="e.g. Type 2 Diabetes, Hypertension..."
               rows={3}
-              className="w-full bg-surface border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-white placeholder:text-slate-600 resize-none"
+              className="w-full bg-surface border border-slate-800 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-slate-100 placeholder:text-slate-500 resize-none"
             />
           </div>
 
@@ -138,7 +138,7 @@ const AddPatientModal = ({ onClose, onSaved }) => {
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose}
-              className="flex-1 py-3 rounded-xl border border-white/10 text-slate-400 hover:bg-white/5 transition-colors font-medium">
+              className="flex-1 py-3 rounded-xl border border-slate-800 text-slate-400 hover:bg-slate-900 transition-colors font-medium">
               Cancel
             </button>
             <button type="submit" disabled={loading}
@@ -220,7 +220,7 @@ const History = () => {
               placeholder="Search patients by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-surface border border-white/10 rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-white placeholder:text-slate-500"
+              className="w-full bg-surface border border-slate-800 rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 text-slate-100 placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -262,9 +262,9 @@ const History = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
                   key={patient.id}
-                  className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-center gap-6 hover:bg-white/5 transition-colors cursor-pointer group"
+                  className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-center gap-6 hover:bg-slate-900 transition-colors cursor-pointer group"
                 >
-                  <div className="w-12 h-12 rounded-full bg-surface border border-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-surface border border-slate-800 flex items-center justify-center shrink-0">
                     <User className="w-6 h-6 text-slate-400 group-hover:text-primary transition-colors" />
                   </div>
 
@@ -285,7 +285,7 @@ const History = () => {
                       <p className="text-sm text-slate-500 mb-1">Gender</p>
                       <div className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full ${risk === 'High' ? 'bg-red-500' : risk === 'Moderate' ? 'bg-amber-500' : 'bg-green-500'}`} />
-                        <span className="font-medium text-slate-300">{patient.gender}</span>
+                        <span className="font-medium text-slate-100">{patient.gender}</span>
                       </div>
                     </div>
                   </div>

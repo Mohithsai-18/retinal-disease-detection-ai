@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 const Upload = () => {
   const [file, setFile] = useState(null);
@@ -22,6 +22,31 @@ const Upload = () => {
     if (e.type === 'dragenter' || e.type === 'dragover') setIsDragging(true);
     else if (e.type === 'dragleave') setIsDragging(false);
   }, []);
+
+  const loadMockFile = async () => {
+    try {
+      const response = await fetch('/uploads/be8c2d2b-b671-4c06-a8f4-e9446e198c21.jpeg');
+      if (!response.ok) throw new Error("File not found");
+      const blob = await response.blob();
+      const mockFile = new File([blob], 'demo_retinal_scan.jpeg', { type: 'image/jpeg' });
+      processFile(mockFile);
+    } catch (err) {
+      console.error("Failed to load mock file", err);
+      const canvas = document.createElement('canvas');
+      canvas.width = 300;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#0f766e';
+      ctx.fillRect(0, 0, 300, 300);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '16px Outfit';
+      ctx.fillText('Demo Retinal Scan', 50, 150);
+      canvas.toBlob((blob) => {
+        const fallbackFile = new File([blob], 'demo_fallback.jpeg', { type: 'image/jpeg' });
+        processFile(fallbackFile);
+      }, 'image/jpeg');
+    }
+  };
 
   const processFile = (selectedFile) => {
     if (selectedFile && selectedFile.type.startsWith('image/')) {
@@ -108,17 +133,26 @@ const Upload = () => {
               </div>
             ) : (
               <div className="py-12">
-                <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl border border-white/5">
+                <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl border border-slate-800">
                   <UploadCloud className={`w-10 h-10 ${isDragging ? 'text-primary' : 'text-slate-400'}`} />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Drag & Drop Image</h3>
                 <p className="text-slate-400 mb-6 text-sm">Supports JPEG, PNG (Max 5MB)</p>
-                <button 
-                  onClick={() => fileInputRef.current.click()}
-                  className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-                >
-                  Browse Files
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                   <button 
+                     onClick={() => fileInputRef.current.click()}
+                     className="bg-transparent border border-primary/40 hover:bg-primary/5 text-primary-dark px-6 py-2 rounded-lg font-medium transition-colors"
+                   >
+                     Browse Files
+                   </button>
+                   <button 
+                     id="test-load-mock"
+                     onClick={loadMockFile}
+                     className="bg-teal-600/20 border border-teal-500/30 hover:bg-teal-600/30 text-teal-300 px-6 py-2 rounded-lg font-medium transition-colors text-sm"
+                   >
+                     Load Demo Retinal Scan
+                   </button>
+                 </div>
               </div>
             )}
             <input 
@@ -180,7 +214,7 @@ const Upload = () => {
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold mb-1">Primary Diagnosis</p>
-                      <h2 className="text-2xl font-bold bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to right, white, ${result.severity_details.color})` }}>
+                      <h2 className="text-2xl font-bold bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to right, var(--color-primary-dark), ${result.severity_details.color})` }}>
                         {result.prediction}
                       </h2>
                     </div>
@@ -203,9 +237,9 @@ const Upload = () => {
                 <div className="glass-panel p-6 rounded-2xl">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="font-semibold flex items-center gap-2"><Eye className="w-4 h-4"/> Interpretability (Grad-CAM)</h3>
-                    <div className="flex items-center gap-2 text-sm bg-surface p-1 rounded-lg">
-                      <button onClick={() => setShowGradcam(false)} className={`px-3 py-1 rounded-md transition-colors ${!showGradcam ? 'bg-primary/20 text-primary' : 'text-slate-400 hover:text-white'}`}>Original</button>
-                      <button onClick={() => setShowGradcam(true)} className={`px-3 py-1 rounded-md transition-colors ${showGradcam ? 'bg-primary/20 text-primary' : 'text-slate-400 hover:text-white'}`}>Heatmap</button>
+                    <div className="flex items-center gap-2 text-sm bg-slate-900/5 p-1 rounded-lg">
+                      <button onClick={() => setShowGradcam(false)} className={`px-3 py-1 rounded-md transition-colors ${!showGradcam ? 'bg-primary/20 text-primary-dark font-medium' : 'text-slate-400 hover:text-slate-100'}`}>Original</button>
+                      <button onClick={() => setShowGradcam(true)} className={`px-3 py-1 rounded-md transition-colors ${showGradcam ? 'bg-primary/20 text-primary-dark font-medium' : 'text-slate-400 hover:text-slate-100'}`}>Heatmap</button>
                     </div>
                   </div>
                   
@@ -223,7 +257,7 @@ const Upload = () => {
 
                     {/* Quick Opacity Slider on Hover */}
                     {showGradcam && (
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur block p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 flex items-center gap-3 px-4">
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-surface/90 backdrop-blur block p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity border border-slate-800 flex items-center gap-3 px-4 shadow-lg">
                         <Layers className="w-4 h-4 text-slate-400"/>
                         <input 
                           type="range" min="0" max="1" step="0.05" value={heatmapOpacity}
@@ -241,11 +275,11 @@ const Upload = () => {
                    <ResponsiveContainer width="100%" height="80%">
                      <BarChart data={Object.entries(result.class_probs).map(([name, prob]) => ({ name: name.split(':')[0], fullName: name, prob: prob * 100 }))} layout="vertical" margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
                        <XAxis type="number" hide />
-                       <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} width={100} tick={{fill: '#94a3b8', fontSize: 12}} />
-                       <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px'}} formatter={(value) => [`${value.toFixed(1)}%`, 'Probability']} />
+                       <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} width={100} tick={{fill: '#475569', fontSize: 12}} />
+                       <Tooltip cursor={{fill: 'rgba(20, 184, 166, 0.05)'}} contentStyle={{backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid rgba(15, 118, 110, 0.25)', borderRadius: '12px', color: '#1e293b'}} formatter={(value) => [`${value.toFixed(1)}%`, 'Probability']} />
                        <Bar dataKey="prob" radius={[0, 4, 4, 0]} maxBarSize={20}>
                          {Object.entries(result.class_probs).map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry[0] === result.prediction ? result.severity_details.color : '#334155'} />
+                            <Cell key={`cell-${index}`} fill={entry[0] === result.prediction ? result.severity_details.color : 'var(--color-slate-700)'} />
                          ))}
                        </Bar>
                      </BarChart>
@@ -256,7 +290,7 @@ const Upload = () => {
                 <div className="flex gap-4">
                   <button 
                     onClick={downloadReport}
-                    className="flex-1 bg-surface border border-white/10 hover:border-primary/50 text-white py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-2 hover:bg-white/5"
+                    className="flex-1 bg-surface border border-primary/20 hover:border-primary/50 text-primary-dark hover:bg-primary/5 py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
                   >
                     <Download className="w-5 h-5" /> Download PDF Report
                   </button>

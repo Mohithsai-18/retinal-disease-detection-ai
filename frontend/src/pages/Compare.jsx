@@ -3,7 +3,7 @@ import { RefreshCw, ArrowRight, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 const Compare = () => {
   // Mock data for progression comparison to demonstrate functionality
@@ -52,7 +52,7 @@ const Compare = () => {
 
       <div className="glass-panel p-6 rounded-2xl mb-8 flex flex-col md:flex-row items-center gap-4 justify-between">
         <div className="flex-1 flex items-center gap-4">
-          <select className="bg-surface border border-white/10 rounded-xl px-4 py-2.5 text-white w-full max-w-xs focus:ring-1 focus:ring-primary focus:outline-none">
+          <select className="bg-surface border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 w-full max-w-xs focus:ring-1 focus:ring-primary focus:outline-none">
             <option>Select Patient</option>
             <option selected>Holden, James (ID: P-002)</option>
             <option>Nagata, Naomi (ID: P-003)</option>
@@ -69,8 +69,8 @@ const Compare = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         {/* Baseline Scan */}
-        <div className="glass-panel rounded-2xl overflow-hidden shadow-xl border border-white/5">
-          <div className="bg-surface/80 p-4 border-b border-white/5 flex justify-between items-center">
+        <div className="glass-panel rounded-2xl overflow-hidden shadow-xl border border-slate-800">
+          <div className="bg-surface/80 p-4 border-b border-slate-800 flex justify-between items-center">
              <div>
                <h3 className="font-semibold text-slate-200">Baseline Scan</h3>
                <p className="text-xs text-slate-400">Oct 12, 2025</p>
@@ -88,8 +88,8 @@ const Compare = () => {
         </div>
 
         {/* Current Scan */}
-        <div className="glass-panel rounded-2xl overflow-hidden shadow-xl border border-white/5">
-          <div className="bg-surface/80 p-4 border-b border-white/5 flex justify-between items-center">
+        <div className="glass-panel rounded-2xl overflow-hidden shadow-xl border border-slate-800">
+          <div className="bg-surface/80 p-4 border-b border-slate-800 flex justify-between items-center">
              <div>
                <h3 className="font-semibold text-slate-200">Current Scan</h3>
                <p className="text-xs text-slate-400">Apr 01, 2026</p>
@@ -127,7 +127,7 @@ const Compare = () => {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-surface/50 p-4 rounded-xl border border-white/5">
+              <div className="bg-surface/50 p-4 rounded-xl border border-slate-800">
                 <p className="text-sm text-slate-400 mb-1">{resultData.metrics.microaneurysms.name}</p>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold">{resultData.metrics.microaneurysms.baseline}</span>
@@ -136,7 +136,7 @@ const Compare = () => {
                   <span className="text-xs bg-red-500/20 text-red-400 px-2 flex items-center rounded">+{resultData.metrics.microaneurysms.change_pct}%</span>
                 </div>
               </div>
-              <div className="bg-surface/50 p-4 rounded-xl border border-white/5">
+              <div className="bg-surface/50 p-4 rounded-xl border border-slate-800">
                 <p className="text-sm text-slate-400 mb-1">{resultData.metrics.exudates.name}</p>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold">{resultData.metrics.exudates.baseline} {resultData.metrics.exudates.unit}</span>
@@ -145,7 +145,7 @@ const Compare = () => {
                   <span className="text-xs bg-amber-500/20 text-amber-400 px-2 flex items-center rounded">+{resultData.metrics.exudates.change_pct}%</span>
                 </div>
               </div>
-              <div className="bg-surface/50 p-4 rounded-xl border border-white/5">
+              <div className="bg-surface/50 p-4 rounded-xl border border-slate-800">
                 <p className="text-sm text-slate-400 mb-1">{resultData.metrics.neovascularization.name}</p>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-slate-500">{resultData.metrics.neovascularization.baseline}</span>
@@ -162,7 +162,7 @@ const Compare = () => {
             <button 
               onClick={downloadReport}
               disabled={isGeneratingPdf}
-              className="mt-6 w-full bg-surface hover:bg-white/5 border border-white/10 text-white tracking-wide font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              className="mt-6 w-full bg-surface border border-primary/20 hover:border-primary/50 text-primary-dark hover:bg-primary/5 tracking-wide font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isGeneratingPdf ? <RefreshCw className="w-5 h-5 animate-spin" /> : null}
               Generate Comparison Report (PDF)
